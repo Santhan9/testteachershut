@@ -33,7 +33,7 @@ public class thControler {
 
 
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "*")
     @PostMapping(path = "/postAddUser", consumes = "application/json", produces = "application/json")
     public String addMember(@RequestBody userInfo user) throws ClassNotFoundException {
 
