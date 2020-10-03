@@ -3,7 +3,13 @@ package com.example.demo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -66,8 +72,19 @@ System.out.println(user.experience+" Experience");
        return tr.validateLogin(user.email,user.password);
 
 
+    }
 
+    @CrossOrigin(origins = "*")
+    @PostMapping(path = "/uploadImage")
+    public String uploadImage(@RequestParam("file") MultipartFile file) throws ClassNotFoundException, IOException {
 
+        File f = new File("C:\\Users\\Santhan\\Desktop\\springJava\\springBoot\\testteachershut\\target\\images\\"+file.getOriginalFilename());
+        f.createNewFile();
+        FileOutputStream fout = new FileOutputStream(f);
+        fout.write(file.getBytes());
+        fout.close();
+
+        return "File is uploaded successfully";
 
 
     }
