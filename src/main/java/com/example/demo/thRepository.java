@@ -44,6 +44,12 @@ public class thRepository {
 
     }
 
+    public String setprofilepic(String email) throws ClassNotFoundException {
+        thDatastorage db= new thDatastorage();
+       return db.updateprofilepic(email);
+
+    }
+
     public void logout(String text) throws ClassNotFoundException {
         thDatastorage db= new thDatastorage();
          db.logout(text);

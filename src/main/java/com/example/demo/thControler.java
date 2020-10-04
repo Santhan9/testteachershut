@@ -1,15 +1,15 @@
 package com.example.demo;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.apache.commons.io.IOUtils;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 @RestController
@@ -76,15 +76,18 @@ System.out.println(user.experience+" Experience");
 
     @CrossOrigin(origins = "*")
     @PostMapping(path = "/uploadImage")
-    public String uploadImage(@RequestParam("file") MultipartFile file) throws ClassNotFoundException, IOException {
+    public String uploadImage(@RequestParam("file") MultipartFile file,@RequestParam("name") String name) throws ClassNotFoundException, IOException {
 
-        File f = new File("C:\\Users\\Santhan\\Desktop\\springJava\\springBoot\\testteachershut\\target\\images\\"+file.getOriginalFilename());
+        File f = new File(System.getProperty("user.dir")+"\\target\\images\\"+name+".jpg");
         f.createNewFile();
         FileOutputStream fout = new FileOutputStream(f);
         fout.write(file.getBytes());
         fout.close();
+        thRepository tr = new thRepository();
+       return tr.setprofilepic(name);
 
-        return "File is uploaded successfully";
+
+       // return "File is uploaded successfully";
 
 
     }
@@ -127,6 +130,19 @@ System.out.println(user.experience+" Experience");
         System.out.println("Search operation begin"+id);
         thRepository tr = new thRepository();
        return tr.searchTeacher(id);
+
+
+
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping(value="/profilepic",produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody byte[] getProfilePic(@RequestParam String id) throws ClassNotFoundException, IOException {
+        InputStream in = new FileInputStream(System.getProperty("user.dir")+"\\target\\images\\"+id+".jpg");
+        System.out.println(in+"image input stream");
+        return IOUtils.toByteArray(in);
+
+
 
 
 

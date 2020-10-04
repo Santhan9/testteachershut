@@ -48,6 +48,27 @@ public class thDatastorage {
         }
     }
 
+    public String updateprofilepic(String email) throws ClassNotFoundException {
+        String sql = "update usertable set profilepic='yes' where email='"+email+"';";
+
+        Connection connection = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            int resultSet = statement.executeUpdate();
+            // System.out.println("Executed"+email);
+            System.out.println("Fine");
+
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeConnection(connection);
+        }
+        return "yes";
+    }
+
     public void storeTeacherDetails(String email,String subject,String experience,String city) throws ClassNotFoundException {
         String sql = "INSERT INTO teacherstable (email,subject,experience,city) VALUES ('"+email+"','"+subject+"','"+experience+"','"+city+"');";
 
@@ -145,7 +166,7 @@ public class thDatastorage {
 
             }
             if(login){
-                String sqlUser = "SELECT usertable.firstName,usertable.lastName,usertable.email,usertable.status,usertable.password,teacherstable.subject,teacherstable.experience,teacherstable.city,usertable.logged FROM usertable LEFT JOIN teacherstable ON usertable.email = teacherstable.email where usertable.email='"+email+"';";
+                String sqlUser = "SELECT usertable.firstName,usertable.lastName,usertable.email,usertable.status,usertable.password,usertable.profilepic,teacherstable.subject,teacherstable.experience,teacherstable.city,usertable.logged FROM usertable LEFT JOIN teacherstable ON usertable.email = teacherstable.email where usertable.email='"+email+"';";
 
 
                 PreparedStatement statementUser = connection.prepareStatement(sqlUser);
@@ -156,12 +177,12 @@ public class thDatastorage {
                 while(rsUser.next()){
                    System.out.println( rsUser.getString("logged")+"fetched loggedStatus");
 
-                    ui = new userInfo(rsUser.getString("status"),rsUser.getString("firstName"),rsUser.getString("lastName"),rsUser.getString("email"),rsUser.getString("subject"),rsUser.getString("experience"),rsUser.getString("city"),rsUser.getString("password"),rsUser.getString("logged"));
+                    ui = new userInfo(rsUser.getString("status"),rsUser.getString("firstName"),rsUser.getString("lastName"),rsUser.getString("email"),rsUser.getString("subject"),rsUser.getString("experience"),rsUser.getString("city"),rsUser.getString("password"),rsUser.getString("logged"),rsUser.getString("profilepic"));
 
                 }
 
             }else{
-                ui = new userInfo("","","","","","","","","");
+                ui = new userInfo("","","","","","","","","","");
 
 
             }
@@ -174,6 +195,8 @@ public class thDatastorage {
         }
 
         System.out.println(login);
+
+        System.out.println(ui.getProfilepic()+" profile pic status");
 
         return ui;
     }
@@ -228,7 +251,7 @@ public class thDatastorage {
                 if(dbSubject.equalsIgnoreCase(subject)){
                     System.out.println("Subject matched");
                     System.out.println(rsUser.getString("firstName"));
-                    ui = new userInfo(rsUser.getString("status"),rsUser.getString("firstName"),rsUser.getString("lastName"),rsUser.getString("email"),rsUser.getString("subject"),rsUser.getString("experience"),rsUser.getString("city"),"",rsUser.getString("logged"));
+                    ui = new userInfo(rsUser.getString("status"),rsUser.getString("firstName"),rsUser.getString("lastName"),rsUser.getString("email"),rsUser.getString("subject"),rsUser.getString("experience"),rsUser.getString("city"),"",rsUser.getString("logged"),"");
                     ul.add(ui);
 
                 }
@@ -266,7 +289,7 @@ public class thDatastorage {
             ResultSet rsUser = statement.getResultSet();
             while(rsUser.next()){
 
-                    ui = new userInfo(rsUser.getString("status"),rsUser.getString("firstName"),rsUser.getString("lastName"),rsUser.getString("email"),rsUser.getString("subject"),rsUser.getString("experience"),rsUser.getString("city"),"",rsUser.getString("logged"));
+                    ui = new userInfo(rsUser.getString("status"),rsUser.getString("firstName"),rsUser.getString("lastName"),rsUser.getString("email"),rsUser.getString("subject"),rsUser.getString("experience"),rsUser.getString("city"),"",rsUser.getString("logged"),"");
                     ul.add(ui);
 
 
@@ -303,7 +326,7 @@ public class thDatastorage {
             ResultSet rsUser = statement.getResultSet();
             while(rsUser.next()){
 
-                ui = new userInfo(rsUser.getString("status"),rsUser.getString("firstName"),rsUser.getString("lastName"),rsUser.getString("email"),rsUser.getString("subject"),rsUser.getString("experience"),rsUser.getString("city"),"",rsUser.getString("logged"));
+                ui = new userInfo(rsUser.getString("status"),rsUser.getString("firstName"),rsUser.getString("lastName"),rsUser.getString("email"),rsUser.getString("subject"),rsUser.getString("experience"),rsUser.getString("city"),"",rsUser.getString("logged"),rsUser.getString("profilepic"));
                 ul.add(ui);
 
 

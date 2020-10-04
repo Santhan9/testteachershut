@@ -12,13 +12,17 @@ String firstname;
     String subject;
 
 
+    public String getProfilepic() {
+        return profilepic;
+    }
 
     String experience;
     String city;
     String logged;
+    String profilepic;
 
 
-    public userInfo(String status,String firstname, String lastname, String email,String subject,String Experience,String city,String password, String logged) {
+    public userInfo(String status,String firstname, String lastname, String email,String subject,String Experience,String city,String password, String logged,String profilepic) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
@@ -28,6 +32,7 @@ String firstname;
         this.experience=Experience;
         this.city=city;
         this.logged= logged;
+        this.profilepic=profilepic;
     }
 
     public String getSubject() {
