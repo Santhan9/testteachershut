@@ -1,5 +1,12 @@
 package com.example.demo;
 
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -90,6 +97,24 @@ public class thRepository {
         thDatastorage db= new thDatastorage();
         db.storeConnection(semail,temail);
 
+    }
+
+    public boolean checkConnections(String semail, String temail) throws ClassNotFoundException {
+        thDatastorage db= new thDatastorage();
+       return db.checkConnection(semail,temail);
+
+    }
+
+    public void addFirebase() throws IOException {
+        FileInputStream serviceAccount =
+                new FileInputStream("path/to/serviceAccountKey.json");
+
+        FirebaseOptions options = new FirebaseOptions.Builder()
+                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .setDatabaseUrl("https://teachershut.firebaseio.com")
+                .build();
+
+        FirebaseApp.initializeApp(options);
     }
 
     public void createPost(String pemail, String pheading,String pcontent) throws ClassNotFoundException {

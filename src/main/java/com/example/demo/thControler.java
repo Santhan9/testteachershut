@@ -102,7 +102,13 @@ System.out.println(user.experience+" Experience");
 
 
         thRepository tr = new thRepository();
-        tr.storeConnections(cn.studentEmail,cn.teacherEmail);
+        if(tr.checkConnections(cn.studentEmail,cn.teacherEmail)){
+
+        }else {
+
+
+            tr.storeConnections(cn.studentEmail, cn.teacherEmail);
+        }
         return "Connection added";
 
     }

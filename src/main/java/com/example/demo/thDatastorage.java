@@ -89,6 +89,32 @@ public class thDatastorage {
         }
     }
 
+    public boolean checkConnection(String studentemail,String teacheremail) throws ClassNotFoundException {
+        boolean t= false;
+        String sql = "select * from connections where studentemail='"+studentemail+"' and teacheremail='"+teacheremail+"';";
+
+        Connection connection = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.executeQuery(sql);
+            ResultSet rs = statement.getResultSet();
+            // System.out.println("Executed"+email);
+            System.out.println("Fine");
+            if(rs.next()){
+                t=true;
+            }
+
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeConnection(connection);
+        }
+        return t;
+    }
+
     public void storeConnection(String studentemail,String teacheremail) throws ClassNotFoundException {
         String sql = "INSERT INTO connections (studentemail,teacheremail) VALUES ('"+studentemail+"','"+teacheremail+"');";
 
@@ -313,7 +339,7 @@ public class thDatastorage {
         String dbTeacher, dbPassword,dbStatus="";
         List<userInfo> ul = new ArrayList<userInfo>();
         boolean login = false;
-        String sql = "SELECT usertable.firstName,usertable.lastName,usertable.email,usertable.status,usertable.password,teacherstable.subject,teacherstable.experience,teacherstable.city,usertable.logged FROM usertable left JOIN teacherstable ON usertable.email = teacherstable.email inner join connections on usertable.email = connections.studentemail where connections.teacheremail='"+Teacher+"';";
+        String sql = "SELECT usertable.firstName,usertable.lastName,usertable.email,usertable.status,usertable.password,usertable.profilepic,teacherstable.subject,teacherstable.experience,teacherstable.city,usertable.logged FROM usertable left JOIN teacherstable ON usertable.email = teacherstable.email inner join connections on usertable.email = connections.studentemail where connections.teacheremail='"+Teacher+"';";
         userInfo ui = new userInfo();
 
         Connection connection = null;
@@ -328,6 +354,7 @@ public class thDatastorage {
 
                 ui = new userInfo(rsUser.getString("status"),rsUser.getString("firstName"),rsUser.getString("lastName"),rsUser.getString("email"),rsUser.getString("subject"),rsUser.getString("experience"),rsUser.getString("city"),"",rsUser.getString("logged"),rsUser.getString("profilepic"));
                 ul.add(ui);
+                System.out.println("student found"+ui);
 
 
             }
