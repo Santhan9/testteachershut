@@ -27,6 +27,25 @@ public class thDatastorage {
         } catch (SQLException ex) {
         }
     }
+    public void storeRegisterDetails(String name,String email, String phone) throws ClassNotFoundException {
+        String sql = "INSERT INTO selenium (email,name,phone) VALUES ('"+email+"','"+name+"','"+phone+"');";
+
+        Connection connection = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            int resultSet = statement.executeUpdate();
+            // System.out.println("Executed"+email);
+            System.out.println("Fine");
+
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeConnection(connection);
+        }
+    }
 
     public void storeUserDetails(String firstName,String lastName,String email,String status, String password) throws ClassNotFoundException {
         String sql = "INSERT INTO usertable (firstName,lastName,email,status,password) VALUES ('"+firstName+"','"+lastName+"','"+email+"','"+status+"','"+password+"');";

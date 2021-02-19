@@ -32,7 +32,16 @@ public class thControler {
 
 
 
+    @CrossOrigin(origins = "*")
+    @PostMapping(path = "/postRegisterUser", consumes = "application/json", produces = "application/json")
+    public String RegisterUser(@RequestBody RegisterInfo user) throws ClassNotFoundException {
 
+        thDatastorage td= new thDatastorage();
+        td.storeRegisterDetails(user.getName(),user.getEmail(),user.getPhone());
+        return "user Registered";
+
+
+    }
     @CrossOrigin(origins = "*")
     @PostMapping(path = "/postAddUser", consumes = "application/json", produces = "application/json")
     public String addMember(@RequestBody userInfo user) throws ClassNotFoundException {
